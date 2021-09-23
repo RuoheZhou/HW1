@@ -1,0 +1,37 @@
+---
+title: "README"
+name: "Ruohe Zhou"
+output: github_document
+---
+
+```{r}
+library(rvest)
+library(tidyverse)
+library(readr)
+library(dplyr)
+webpage <- read_html("https://guide.wisc.edu/faculty/")
+
+```
+
+```{r}
+result <- webpage %>% html_nodes(".uw-people") %>% html_text2()
+```
+
+```{r}
+split1 = strsplit(result, '\n\n\n') 
+df <- data.frame(name = character(), position = character(), department = character(), degree = character())
+```
+
+```{r}
+for (n in 1:length(split1)){
+  for (i in 1:length(split1[[n]])){
+    individual <- strsplit(split1[[n]][i], '\n')
+    if (length(individual[[1]]) == 4){
+      df[nrow(df) + 1, ] = individual[[1]]
+    }
+  }
+}
+df
+```
+
+
